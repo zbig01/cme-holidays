@@ -2,8 +2,8 @@ name: Update CrossTrade Holiday JSON
 
 on:
   schedule:
-    - cron: "0 12 5 1 *"   # Every Jan 5 at 12:00 UTC
-  workflow_dispatch:       # Manual trigger
+    - cron: "0 12 5 1 *"
+  workflow_dispatch:
 
 permissions:
   contents: write
