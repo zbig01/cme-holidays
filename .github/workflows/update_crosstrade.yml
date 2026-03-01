@@ -2,8 +2,11 @@ name: Update CrossTrade Holiday JSON
 
 on:
   schedule:
-    - cron: "0 12 5 1 *"   # Every Jan 5 at 12:00 UTC (safe after CrossTrade posts new year)
+    - cron: "0 12 5 1 *"   # Every Jan 5 at 12:00 UTC
   workflow_dispatch:       # Manual trigger
+
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -32,7 +35,6 @@ jobs:
           html = requests.get(url, timeout=20).text
           soup = BeautifulSoup(html, "lxml")
 
-          # Extract holiday rows (CrossTrade uses consistent table classes)
           rows = soup.select("table.holiday-calendar-table tbody tr")
 
           data = []
@@ -48,7 +50,6 @@ jobs:
 
           with open("crosstrade.json", "w") as f:
               json.dump(data, f, indent=2)
-
           EOF
 
       - name: Commit changes
@@ -58,4 +59,3 @@ jobs:
           git add crosstrade.json
           git commit -m "Auto-update CrossTrade holiday JSON" || echo "No changes"
           git push
-
