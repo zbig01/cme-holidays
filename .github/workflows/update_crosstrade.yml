@@ -2,8 +2,9 @@ name: Update CrossTrade Holiday JSON
 
 on:
   schedule:
-    - cron: "0 12 5 1 *"
-  workflow_dispatch:
+    # Runs at 12:00 PM UTC on the 5th of every month (Adjusted for freshness)
+    - cron: "0 12 5 * *"
+  workflow_dispatch: # Allows you to click "Run Workflow" manually
 
 permissions:
   contents: write
@@ -23,34 +24,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 lxml
+          pip install playwright beautifulsoup4 lxml
+          playwright install chromium
 
-      - name: Scrape CrossTrade and update JSON
-        run: |
-          python3 << 'EOF'
-          import requests, json
-          from bs4 import BeautifulSoup
-
-          url = "https://www.cmegroup.com/tools-information/holiday-calendar.html"
-          html = requests.get(url, timeout=20).text
-          soup = BeautifulSoup(html, "lxml")
-
-          rows = soup.select("table.holiday-calendar-table tbody tr")
-
-          data = []
-          for r in rows:
-              cols = [c.get_text(strip=True) for c in r.find_all("td")]
-              if len(cols) >= 3:
-                  date, market, hours = cols[:3]
-                  data.append({
-                      "date": date,
-                      "market": market,
-                      "hours": hours
-                  })
-
-          with open("crosstrade.json", "w") as f:
-              json.dump(data, f, indent=2)
-          EOF
+      - name: Run Scraper
+        run: python scrape.py
 
       - name: Commit changes
         run: |
