@@ -2,8 +2,8 @@ name: Update CrossTrade Holiday JSON
 
 on:
   schedule:
-    # Runs at 12:00 PM UTC on the 5th of every month (Adjusted for freshness)
-    - cron: "0 12 5 * *"
+    # Runs at 12:00 PM UTC on every Sunday (Adjusted for freshness)
+    - cron: "0 0 * * 0"
   workflow_dispatch: # Allows you to click "Run Workflow" manually
 
 permissions:
