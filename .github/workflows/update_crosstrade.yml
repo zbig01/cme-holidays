@@ -2,9 +2,8 @@ name: Update CrossTrade Holiday JSON
 
 on:
   schedule:
-    # Runs at 12:00 PM UTC on every Sunday (Adjusted for freshness)
-    - cron: "0 0 * * 0"
-  workflow_dispatch: # Allows you to click "Run Workflow" manually
+    - cron: "0 0 * * 0" # Runs every Sunday at midnight
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,7 +11,6 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -24,8 +22,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install playwright beautifulsoup4 lxml
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 lxml playwright
           playwright install chromium
+
+      # If you are using the "Sidedoor" script, it only needs requests.
+      # But keeping the others ensures Playwright still works if you switch back.
 
       - name: Run Scraper
         run: python scrape.py
@@ -35,5 +37,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add crosstrade.json
-          git commit -m "Auto-update CrossTrade holiday JSON" || echo "No changes"
+          git commit -m "Auto-update holiday JSON" || echo "No changes to commit"
           git push
