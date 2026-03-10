@@ -10,8 +10,8 @@
     "economic_calendar_2026": {
       "is_stale": false,
       "expected_update_interval_days": 7,
-      "sha256": "192fd68fed4eb9f1cd17e9da0585903eb57bcb094c341a66057c3ea8883c3dee",
-      "last_updated_utc": "2026-03-10T06:02:35Z"
+      "sha256": "4f39d3bb3718d24049e1438f6fbc2b2984dcb64a0cbe6c048fb3561b87235870",
+      "last_updated_utc": "2026-03-10T06:06:23Z"
     },
     "market_holidays_2026": {
       "is_stale": false,
